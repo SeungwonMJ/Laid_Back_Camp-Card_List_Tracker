@@ -132,6 +132,30 @@ const THEMES = {
 
 const STORAGE_KEY = "yurucamp-tracker-v4";
 
+const WS_IMG = "https://ws-tcg.com/wordpress/wp-content/images/cardlist/_partimages/";
+const SIDE_ICON = { "white":"w.gif", "White":"w.gif", "black":"s.gif", "Black":"s.gif" };
+const COLOR_ICON = { "赤":"red.gif", "Red":"red.gif", "red":"red.gif", "青":"blue.gif", "Blue":"blue.gif", "blue":"blue.gif", "緑":"green.gif", "Green":"green.gif", "green":"green.gif", "黄":"yellow.gif", "Yellow":"yellow.gif", "yellow":"yellow.gif" };
+const TRIGGER_ICON = { "ソウル":"soul.gif", "ゲート":"gate.gif", "トレジャー":"treasure.gif", "Soul":"soul.gif", "soul":"soul.gif", "Gate":"gate.gif", "gate":"gate.gif", "Treasure":"treasure.gif", "treasure":"treasure.gif" };
+
+function WsIcon({ file }) {
+  return <img src={`${WS_IMG}${file}`} alt={file} style={{ height:14, verticalAlign:"middle" }} />;
+}
+
+function renderStatVal(key, val, card) {
+  if (key === "side" && SIDE_ICON[val]) return <WsIcon file={SIDE_ICON[val]} />;
+  if (key === "color" && COLOR_ICON[val]) return <WsIcon file={COLOR_ICON[val]} />;
+  if (key === "soul") {
+    const n = parseInt(val);
+    if (n > 0) return <span style={{ display:"flex", gap:2 }}>{Array.from({length:n}, (_, i) => <WsIcon key={i} file="soul.gif" />)}</span>;
+  }
+  if (key === "trigger" && val && val !== "-") {
+    const parts = val.split(",").map(s => s.trim());
+    const icons = parts.map(p => TRIGGER_ICON[p]).filter(Boolean);
+    if (icons.length > 0) return <span style={{ display:"flex", gap:2 }}>{icons.map((f, i) => <WsIcon key={i} file={f} />)}</span>;
+  }
+  return <>{val || "—"}</>;
+}
+
 function cardImageUrl(id) {
   const normalized = id.toLowerCase().replace("/", "_").replace("-", "_");
   return `https://ws-tcg.com/wordpress/wp-content/images/cardlist/y/yrc_w116/${normalized}.png`;
@@ -179,15 +203,15 @@ function CardModal({ card, state, lang, t, th, onClose, onQtyChange, onImageChan
   }
 
   const statRows = [
-    [t.type, typeDisplay],
-    [t.side, card.side || "—"],
-    [t.color, card.color || "—"],
-    [t.level, card.level],
-    [t.power, card.power],
-    [t.soul, card.soul || "—"],
-    [t.cost, card.cost],
-    [t.trigger, card.trigger],
-    [t.traits, traitsDisplay],
+    { key:"type",    label:t.type,    val:typeDisplay },
+    { key:"side",    label:t.side,    val:card.side },
+    { key:"color",   label:t.color,   val:card.color },
+    { key:"level",   label:t.level,   val:card.level },
+    { key:"power",   label:t.power,   val:card.power },
+    { key:"soul",    label:t.soul,    val:card.soul },
+    { key:"cost",    label:t.cost,    val:card.cost },
+    { key:"trigger", label:t.trigger, val:card.trigger },
+    { key:"traits",  label:t.traits,  val:traitsDisplay },
   ];
 
   return (
@@ -264,10 +288,12 @@ function CardModal({ card, state, lang, t, th, onClose, onQtyChange, onImageChan
 
         {/* 스탯 3×3 */}
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:6, marginBottom:16 }}>
-          {statRows.map(([label, val]) => (
-            <div key={label} style={{ background:th.statBg, borderRadius:8, padding:"7px 10px" }}>
+          {statRows.map(({ key, label, val }) => (
+            <div key={key} style={{ background:th.statBg, borderRadius:8, padding:"7px 10px" }}>
               <div style={{ fontSize:9, color:th.textDim, marginBottom:2 }}>{label}</div>
-              <div style={{ fontSize:12, color:th.textCard }}>{val || "—"}</div>
+              <div style={{ fontSize:12, color:th.textCard, display:"flex", alignItems:"center", minHeight:16 }}>
+                {renderStatVal(key, val, card)}
+              </div>
             </div>
           ))}
         </div>
