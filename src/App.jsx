@@ -5,7 +5,8 @@ const I18N = {
   ja: {
     title: "ゆるキャン△ SEASON3",
     subtitle: "Weiß Schwarz コレクショントラッカー",
-    all: "全て", collected: "収集済み", missing: "未収集",
+    all: "全て", collected: "収集済み", missing: "未収集", surplus: "余剰",
+    exportBtn: "エクスポート", importBtn: "インポート",
     deckAll: "全て", deckBooster: "ブースターパック", deckTrial: "トライアルデッキ",
     search: "番号・名前で検索…", showing: "件表示",
     qty: "枚", type: "種類", level: "レベル", power: "パワー",
@@ -18,7 +19,8 @@ const I18N = {
   en: {
     title: "Laid-Back Camp SEASON3",
     subtitle: "Weiß Schwarz Collection Tracker",
-    all: "All", collected: "Collected", missing: "Missing",
+    all: "All", collected: "Collected", missing: "Missing", surplus: "Surplus",
+    exportBtn: "Export", importBtn: "Import",
     deckAll: "All", deckBooster: "Booster Pack", deckTrial: "Trial Deck",
     search: "Search by number or name…", showing: "shown",
     qty: "copies", type: "Type", level: "Level", power: "Power",
@@ -31,7 +33,8 @@ const I18N = {
   ko: {
     title: "유루캠△ SEASON3",
     subtitle: "바이스 슈발츠 컬렉션 트래커",
-    all: "전체", collected: "수집", missing: "미수집",
+    all: "전체", collected: "수집", missing: "미수집", surplus: "여분",
+    exportBtn: "내보내기", importBtn: "가져오기",
     deckAll: "전체", deckBooster: "부스터팩", deckTrial: "트라이얼덱",
     search: "번호 또는 이름으로 검색…", showing: "장 표시",
     qty: "장", type: "종류", level: "레벨", power: "파워",
@@ -371,6 +374,36 @@ export default function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
+  const importRef = useRef(null);
+
+  function handleExport() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `yurucamp-tracker-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleImport(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const parsed = JSON.parse(ev.target.result);
+        if (parsed.qty) {
+          setState(parsed);
+        }
+      } catch {
+        alert("올바른 백업 파일이 아닙니다.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  }
+
   const updateQty = useCallback((id, val) => {
     setState((s) => ({ ...s, qty: { ...s.qty, [id]: val } }));
   }, []);
@@ -397,6 +430,7 @@ export default function App() {
       const qty = state.qty[c.id] ?? 0;
       if (showOnly === "collected" && qty === 0) return false;
       if (showOnly === "missing" && qty > 0) return false;
+      if (showOnly === "surplus" && qty < 5) return false;
       if (search) {
         const s = search.toLowerCase();
         if (
@@ -440,6 +474,15 @@ export default function App() {
               <div style={{ fontSize:17, fontWeight:"bold", color:th.textMid, letterSpacing:1 }}>{t.title}</div>
               <div style={{ fontSize:10, color:th.textSub }}>{t.subtitle}</div>
             </div>
+
+            {/* 내보내기/가져오기 */}
+            <button onClick={handleExport} style={{ ...btnBase, padding:"5px 11px", fontSize:12 }}>
+              {t.exportBtn}
+            </button>
+            <label style={{ ...btnBase, padding:"5px 11px", fontSize:12, cursor:"pointer" }}>
+              {t.importBtn}
+              <input ref={importRef} type="file" accept=".json" style={{ display:"none" }} onChange={handleImport} />
+            </label>
 
             {/* 다크/라이트 토글 버튼 */}
             <button
@@ -551,7 +594,7 @@ export default function App() {
                        padding:"7px 12px", color:th.text, fontSize:12, outline:"none" }}
             />
             <div style={{ display:"flex", gap:4 }}>
-              {[["all", t.all], ["collected", t.collected], ["missing", t.missing]].map(([v, label]) => (
+              {[["all", t.all], ["collected", t.collected], ["missing", t.missing], ["surplus", t.surplus]].map(([v, label]) => (
                 <button key={v} onClick={() => setShowOnly(v)}
                   style={{ padding:"7px 10px", borderRadius:8, fontSize:11, cursor:"pointer",
                            background: showOnly === v ? "rgba(76,175,80,0.22)" : th.surface,
