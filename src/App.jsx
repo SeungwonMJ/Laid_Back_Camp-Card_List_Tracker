@@ -677,6 +677,13 @@ export default function App() {
           onNameChange={updateName}
         />
       )}
+
+      {/* 푸터 */}
+      <footer style={{ textAlign:"center", padding:"24px 16px 32px", color:th.textDim, fontSize:11, lineHeight:1.8 }}>
+        <div>© 2026 <a href="https://github.com/SeungwonMJ" target="_blank" rel="noreferrer" style={{ color:th.textDim }}>SeungwonMJ</a> — MIT License (app code only)</div>
+        <div>Card data &amp; images © Bushiroad. This is a non-commercial fan project.</div>
+        <div>ゆるキャン△ © あfろ / Bushiroad</div>
+      </footer>
     </div>
   );
 }

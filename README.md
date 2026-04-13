@@ -4,6 +4,12 @@
 
 > 개인 팬 프로젝트입니다. 상업적 목적 없이 순수 팬심으로 만들었습니다.
 
+## 라이선스
+
+앱 소스 코드는 [MIT License](LICENSE) © 2026 [SeungwonMJ](https://github.com/SeungwonMJ)
+
+카드 데이터 및 이미지는 Bushiroad 소유입니다. ゆるキャン△ © あfろ / Bushiroad
+
 ## 실행 방법
 
 ### 1. 사전 준비
