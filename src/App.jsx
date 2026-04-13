@@ -6,6 +6,7 @@ const I18N = {
     title: "ゆるキャン△ SEASON3",
     subtitle: "Weiß Schwarz コレクショントラッカー",
     all: "全て", collected: "収集済み", missing: "未収集",
+    deckAll: "全て", deckBooster: "ブースターパック", deckTrial: "トライアルデッキ",
     search: "番号・名前で検索…", showing: "件表示",
     qty: "枚", type: "種類", level: "レベル", power: "パワー",
     soul: "ソウル", cost: "コスト", trigger: "トリガー",
@@ -18,6 +19,7 @@ const I18N = {
     title: "Laid-Back Camp SEASON3",
     subtitle: "Weiß Schwarz Collection Tracker",
     all: "All", collected: "Collected", missing: "Missing",
+    deckAll: "All", deckBooster: "Booster Pack", deckTrial: "Trial Deck",
     search: "Search by number or name…", showing: "shown",
     qty: "copies", type: "Type", level: "Level", power: "Power",
     soul: "Soul", cost: "Cost", trigger: "Trigger",
@@ -30,6 +32,7 @@ const I18N = {
     title: "유루캠△ SEASON3",
     subtitle: "바이스 슈발츠 컬렉션 트래커",
     all: "전체", collected: "수집", missing: "미수집",
+    deckAll: "전체", deckBooster: "부스터팩", deckTrial: "트라이얼덱",
     search: "번호 또는 이름으로 검색…", showing: "장 표시",
     qty: "장", type: "종류", level: "레벨", power: "파워",
     soul: "소울", cost: "코스트", trigger: "트리거",
@@ -492,7 +495,7 @@ export default function App() {
 
           {/* 덱 모드 선택 */}
           <div style={{ display:"flex", gap:4, marginBottom:10 }}>
-            {[["all","전체"],["booster","부스터팩"],["trial","트라이얼덱"]].map(([v, label]) => (
+            {[["all", t.deckAll],["booster", t.deckBooster],["trial", t.deckTrial]].map(([v, label]) => (
               <button key={v} onClick={() => { setDeckMode(v); setFilterRarity([]); }}
                 style={{ padding:"5px 12px", borderRadius:8, fontSize:11, cursor:"pointer",
                          background: deckMode === v ? "rgba(76,175,80,0.22)" : th.surface,
