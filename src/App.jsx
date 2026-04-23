@@ -232,14 +232,15 @@ function CardModal({ card, state, lang, t, th, onClose, onQtyChange, onImageChan
                  padding:24, maxWidth:500, width:"100%", maxHeight:"90vh", overflowY:"auto",
                  boxShadow:`0 0 40px ${col.bg}22`, position:"relative" }}
       >
-        {/* 닫기 버튼 */}
-        <button
-          onClick={onClose}
-          style={{ position:"absolute", top:12, right:12, width:32, height:32,
-                   background:"rgba(255,255,255,0.08)", border:"none", borderRadius:8,
-                   color:th.textDim, fontSize:18, cursor:"pointer", lineHeight:1,
-                   display:"flex", alignItems:"center", justifyContent:"center" }}
-        >✕</button>
+        {/* 헤더 */}
+        <div style={{ display:"flex", justifyContent:"flex-end", marginBottom:12 }}>
+          <button
+            onClick={onClose}
+            style={{ width:32, height:32, background:"rgba(255,255,255,0.08)", border:"none",
+                     borderRadius:8, color:th.textDim, fontSize:18, cursor:"pointer",
+                     display:"flex", alignItems:"center", justifyContent:"center" }}
+          >✕</button>
+        </div>
 
         {/* 이미지 */}
         <div style={{ width:"100%", aspectRatio:"3/4", background:th.imgBg, borderRadius:10,
