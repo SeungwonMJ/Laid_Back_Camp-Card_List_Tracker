@@ -230,8 +230,17 @@ function CardModal({ card, state, lang, t, th, onClose, onQtyChange, onImageChan
         onClick={(e) => e.stopPropagation()}
         style={{ background:th.modalBg, border:`1px solid ${col.bg}44`, borderRadius:16,
                  padding:24, maxWidth:500, width:"100%", maxHeight:"90vh", overflowY:"auto",
-                 boxShadow:`0 0 40px ${col.bg}22` }}
+                 boxShadow:`0 0 40px ${col.bg}22`, position:"relative" }}
       >
+        {/* 닫기 버튼 */}
+        <button
+          onClick={onClose}
+          style={{ position:"absolute", top:12, right:12, width:32, height:32,
+                   background:"rgba(255,255,255,0.08)", border:"none", borderRadius:8,
+                   color:th.textDim, fontSize:18, cursor:"pointer", lineHeight:1,
+                   display:"flex", alignItems:"center", justifyContent:"center" }}
+        >✕</button>
+
         {/* 이미지 */}
         <div style={{ width:"100%", aspectRatio:"3/4", background:th.imgBg, borderRadius:10,
                       marginBottom:16, overflow:"hidden", display:"flex", alignItems:"center",
