@@ -637,6 +637,7 @@ export default function App() {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(125px, 1fr))", gap:8 }}>
             {filtered.map((card) => {
               const qty = state.qty[card.id] ?? 0;
+              const displayQty = showOnly === "surplus" ? qty - 4 : qty;
               const col = RARITY_COLORS[card.rarity];
               const cardImg = state.images[card.id] || cardImageUrl(card.id);
               const name = getDisplayName(card);
@@ -667,7 +668,7 @@ export default function App() {
                                   color: qty >= 4 ? "#1a1a1a" : "#fff",
                                   borderRadius:"50%", width:16, height:16,
                                   display:"flex", alignItems:"center", justifyContent:"center",
-                                  fontSize:9, fontWeight:"bold" }}>{qty}</div>
+                                  fontSize:9, fontWeight:"bold" }}>{displayQty}</div>
                   )}
                 </div>
               );
@@ -677,6 +678,7 @@ export default function App() {
           <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
             {filtered.map((card) => {
               const qty = state.qty[card.id] ?? 0;
+              const displayQty = showOnly === "surplus" ? qty - 4 : qty;
               const col = RARITY_COLORS[card.rarity];
               const name = getDisplayName(card);
               const cardImg = state.images[card.id] || cardImageUrl(card.id);
@@ -709,7 +711,7 @@ export default function App() {
                                 display:"flex", alignItems:"center", justifyContent:"center",
                                 fontSize:10, fontWeight:"bold", flexShrink:0,
                                 color: qty >= 4 ? "#e6a800" : qty > 0 ? "#4CAF50" : th.countMissing }}>
-                    {qty || "—"}
+                    {displayQty || "—"}
                   </div>
                 </div>
               );
