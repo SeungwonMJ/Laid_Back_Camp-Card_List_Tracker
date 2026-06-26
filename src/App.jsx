@@ -7,7 +7,7 @@ const I18N = {
     subtitle: "Weiß Schwarz コレクショントラッカー",
     all: "全て", collected: "収集済み", missing: "未収集", surplus: "余剰",
     exportBtn: "エクスポート", importBtn: "インポート",
-    deckAll: "全て", deckBooster: "ブースターパック", deckTrial: "トライアルデッキ",
+    deckAll: "全て", deckBooster: "ブースターパック", deckTrial: "トライアルデッキ", deckPr: "PRカード",
     search: "番号・名前で検索…", showing: "件表示",
     qty: "枚", type: "種類", level: "レベル", power: "パワー",
     soul: "ソウル", cost: "コスト", trigger: "トリガー",
@@ -21,7 +21,7 @@ const I18N = {
     subtitle: "Weiß Schwarz Collection Tracker",
     all: "All", collected: "Collected", missing: "Missing", surplus: "Surplus",
     exportBtn: "Export", importBtn: "Import",
-    deckAll: "All", deckBooster: "Booster Pack", deckTrial: "Trial Deck",
+    deckAll: "All", deckBooster: "Booster Pack", deckTrial: "Trial Deck", deckPr: "PR Cards",
     search: "Search by number or name…", showing: "shown",
     qty: "copies", type: "Type", level: "Level", power: "Power",
     soul: "Soul", cost: "Cost", trigger: "Trigger",
@@ -35,7 +35,7 @@ const I18N = {
     subtitle: "바이스 슈발츠 컬렉션 트래커",
     all: "전체", collected: "수집", missing: "미수집", surplus: "여분",
     exportBtn: "내보내기", importBtn: "가져오기",
-    deckAll: "전체", deckBooster: "부스터팩", deckTrial: "트라이얼덱",
+    deckAll: "전체", deckBooster: "부스터팩", deckTrial: "트라이얼덱", deckPr: "PR 카드",
     search: "번호 또는 이름으로 검색…", showing: "장 표시",
     qty: "장", type: "종류", level: "레벨", power: "파워",
     soul: "소울", cost: "코스트", trigger: "트리거",
@@ -48,7 +48,7 @@ const I18N = {
 
 const LANG_LABELS = { ja: "日本語", en: "English", ko: "한국어" };
 
-const RARITY_ORDER = ["SEC+","RRR+","AGR","SSP","SP","RRR","SR","RR","R","U","C","CR","TD"];
+const RARITY_ORDER = ["SEC+","RRR+","AGR","SSP","SP","RRR","SR","RR","R","U","C","CR","TD","PR+","PR"];
 const RARITY_COLORS = {
   "SEC+": { bg:"#FFD700", text:"#1a1a1a" },
   "RRR+": { bg:"#FF6B9D", text:"#fff" },
@@ -63,6 +63,8 @@ const RARITY_COLORS = {
   "C":    { bg:"#8395a7", text:"#fff" },
   "CR":   { bg:"#F368E0", text:"#fff" },
   "TD":   { bg:"#A0522D", text:"#fff" },
+  "PR+":  { bg:"#E8C429", text:"#1a1a1a" },
+  "PR":   { bg:"#C9A84C", text:"#fff" },
 };
 
 const TYPE_MAP = {
@@ -548,7 +550,7 @@ export default function App() {
 
           {/* 덱 모드 선택 */}
           <div style={{ display:"flex", gap:4, marginBottom:10 }}>
-            {[["all", t.deckAll],["booster", t.deckBooster],["trial", t.deckTrial]].map(([v, label]) => (
+            {[["all", t.deckAll],["booster", t.deckBooster],["trial", t.deckTrial],["pr", t.deckPr]].map(([v, label]) => (
               <button key={v} onClick={() => { setDeckMode(v); setFilterRarity([]); }}
                 style={{ padding:"5px 12px", borderRadius:8, fontSize:11, cursor:"pointer",
                          background: deckMode === v ? "rgba(76,175,80,0.22)" : th.surface,
