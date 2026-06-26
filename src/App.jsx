@@ -392,7 +392,10 @@ export default function App() {
   const [lang, setLang] = useState("ja");
   const t = I18N[lang];
 
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem("yurucamp-darkmode");
+    return saved === null ? true : saved === "true";
+  });
   const th = THEMES[darkMode ? "dark" : "light"];
 
   const [deckMode, setDeckMode] = useState("all"); // "all" | "booster" | "trial"
@@ -424,6 +427,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem("yurucamp-darkmode", darkMode);
+  }, [darkMode]);
 
   const importRef = useRef(null);
 
