@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Laid_Back_Camp-Card_List_Tracker/static/js/main.cbb8cd6f.js",
+    "main.js": "/Laid_Back_Camp-Card_List_Tracker/static/js/main.c140b69d.js",
     "index.html": "/Laid_Back_Camp-Card_List_Tracker/index.html",
-    "main.cbb8cd6f.js.map": "/Laid_Back_Camp-Card_List_Tracker/static/js/main.cbb8cd6f.js.map"
+    "main.c140b69d.js.map": "/Laid_Back_Camp-Card_List_Tracker/static/js/main.c140b69d.js.map"
   },
   "entrypoints": [
-    "static/js/main.cbb8cd6f.js"
+    "static/js/main.c140b69d.js"
   ]
 }
