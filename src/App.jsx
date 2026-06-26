@@ -389,7 +389,7 @@ function CardModal({ card, state, lang, t, th, onClose, onQtyChange, onImageChan
 }
 
 export default function App() {
-  const [lang, setLang] = useState("ja");
+  const [lang, setLang] = useState(() => localStorage.getItem("yurucamp-lang") || "ja");
   const t = I18N[lang];
 
   const [darkMode, setDarkMode] = useState(() => {
@@ -431,6 +431,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("yurucamp-darkmode", darkMode);
   }, [darkMode]);
+
+  useEffect(() => {
+    localStorage.setItem("yurucamp-lang", lang);
+  }, [lang]);
 
   const importRef = useRef(null);
 
