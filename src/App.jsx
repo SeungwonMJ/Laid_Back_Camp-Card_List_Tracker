@@ -520,7 +520,7 @@ export default function App() {
                     padding:"14px 20px", position:"sticky", top:0, zIndex:50, backdropFilter:"blur(12px)" }}>
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10, flexWrap:"wrap" }}>
-            <span style={{ fontSize:26 }}>⛺</span>
+            <img src={`${process.env.PUBLIC_URL}/yuru-camp-logo.png`} alt="유루캠" style={{ height:40 }} />
             <div style={{ flex:1 }}>
               <div style={{ fontSize:17, fontWeight:"bold", color:th.textMid, letterSpacing:1 }}>{t.title}</div>
               <div style={{ fontSize:10, color:th.textSub }}>{t.subtitle}</div>
