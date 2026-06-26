@@ -143,13 +143,43 @@ const STORAGE_KEY = "yurucamp-tracker-v4";
 const WS_IMG = "https://ws-tcg.com/wordpress/wp-content/images/cardlist/_partimages/";
 const SIDE_ICON = { "white":"w.gif", "White":"w.gif", "black":"s.gif", "Black":"s.gif" };
 const COLOR_ICON = { "赤":"red.gif", "Red":"red.gif", "red":"red.gif", "青":"blue.gif", "Blue":"blue.gif", "blue":"blue.gif", "緑":"green.gif", "Green":"green.gif", "green":"green.gif", "黄":"yellow.gif", "Yellow":"yellow.gif", "yellow":"yellow.gif" };
-const TRIGGER_ICON = { "ソウル":"soul.gif", "ゲート":"gate.gif", "トレジャー":"treasure.gif", "Soul":"soul.gif", "soul":"soul.gif", "Gate":"gate.gif", "gate":"gate.gif", "Treasure":"treasure.gif", "treasure":"treasure.gif" };
+const TRIGGER_LABEL = {
+  "soul.gif":      { ja: "ソウル",         en: "Soul",       ko: "소울" },
+  "gate.gif":      { ja: "ゲート",         en: "Gate",       ko: "게이트" },
+  "treasure.gif":  { ja: "トレジャー",     en: "Treasure",   ko: "금괴" },
+  "shot.gif":      { ja: "ショット",       en: "Shot",       ko: "샷" },
+  "stock.gif":     { ja: "プール",         en: "Stock",      ko: "보따리" },
+  "salvage.gif":   { ja: "カムバック",     en: "Comeback",   ko: "문" },
+  "bounce.gif":    { ja: "リターン",       en: "Return",     ko: "회오리" },
+  "draw.gif":      { ja: "ドロー",         en: "Draw",       ko: "책" },
+  "standby.gif":   { ja: "スタンバイ",     en: "Standby",    ko: "스탠바이" },
+  "choice.gif":    { ja: "チョイス",       en: "Choice",     ko: "초이스" },
+  "discovery.gif": { ja: "ディスカバリー", en: "Discovery",  ko: "디스커버리" },
+  "chance.gif":    { ja: "チャンス",       en: "Chance",     ko: "챈스" },
+  "focus.gif":     { ja: "フォーカス",     en: "Focus",      ko: "포커스" },
+};
+
+const TRIGGER_ICON = {
+  "ソウル":"soul.gif",     "Soul":"soul.gif",     "soul":"soul.gif",     "소울":"soul.gif",
+  "ゲート":"gate.gif",     "Gate":"gate.gif",     "gate":"gate.gif",     "게이트":"gate.gif",
+  "トレジャー":"treasure.gif", "Treasure":"treasure.gif", "treasure":"treasure.gif", "금괴":"treasure.gif",
+  "ショット":"shot.gif",   "Shot":"shot.gif",     "shot":"shot.gif",     "샷":"shot.gif",
+  "プール":"stock.gif",    "Stock":"stock.gif",   "stock":"stock.gif",   "보따리":"stock.gif",
+  "カムバック":"salvage.gif", "Comeback":"salvage.gif", "comeback":"salvage.gif", "문":"salvage.gif",
+  "リターン":"bounce.gif", "Return":"bounce.gif", "return":"bounce.gif", "회오리":"bounce.gif",
+  "ドロー":"draw.gif",     "Draw":"draw.gif",     "draw":"draw.gif",     "책":"draw.gif",
+  "スタンバイ":"standby.gif", "Standby":"standby.gif", "standby":"standby.gif", "스탠바이":"standby.gif",
+  "チョイス":"choice.gif", "Choice":"choice.gif", "choice":"choice.gif", "초이스":"choice.gif",
+  "ディスカバリー":"discovery.gif", "Discovery":"discovery.gif", "discovery":"discovery.gif", "디스커버리":"discovery.gif",
+  "チャンス":"chance.gif", "Chance":"chance.gif", "chance":"chance.gif", "챈스":"chance.gif",
+  "フォーカス":"focus.gif", "Focus":"focus.gif",  "focus":"focus.gif",   "포커스":"focus.gif",
+};
 
 function WsIcon({ file }) {
   return <img src={`${WS_IMG}${file}`} alt={file} style={{ height:14, verticalAlign:"middle" }} />;
 }
 
-function renderStatVal(key, val, card) {
+function renderStatVal(key, val, card, lang = "ja") {
   if (key === "side" && SIDE_ICON[val]) return <WsIcon file={SIDE_ICON[val]} />;
   if (key === "color" && COLOR_ICON[val]) return <WsIcon file={COLOR_ICON[val]} />;
   if (key === "soul") {
@@ -158,8 +188,17 @@ function renderStatVal(key, val, card) {
   }
   if (key === "trigger" && val && val !== "-") {
     const parts = val.split(",").map(s => s.trim());
-    const icons = parts.map(p => TRIGGER_ICON[p]).filter(Boolean);
-    if (icons.length > 0) return <span style={{ display:"flex", gap:2 }}>{icons.map((f, i) => <WsIcon key={i} file={f} />)}</span>;
+    const items = parts.map(p => ({ gif: TRIGGER_ICON[p], label: TRIGGER_LABEL[TRIGGER_ICON[p]]?.[lang] || p }));
+    if (items.some(i => i.gif)) return (
+      <span style={{ display:"flex", gap:4, flexWrap:"wrap", alignItems:"center" }}>
+        {items.map(({ gif, label }, i) => (
+          <span key={i} style={{ display:"flex", alignItems:"center", gap:2 }}>
+            {gif && <WsIcon file={gif} />}
+            <span>{label}</span>
+          </span>
+        ))}
+      </span>
+    );
   }
   return <>{val || "—"}</>;
 }
@@ -310,7 +349,7 @@ function CardModal({ card, state, lang, t, th, onClose, onQtyChange, onImageChan
             <div key={key} style={{ background:th.statBg, borderRadius:8, padding:"7px 10px" }}>
               <div style={{ fontSize:9, color:th.textDim, marginBottom:2 }}>{label}</div>
               <div style={{ fontSize:12, color:th.textCard, display:"flex", alignItems:"center", minHeight:16 }}>
-                {renderStatVal(key, val, card)}
+                {renderStatVal(key, val, card, lang)}
               </div>
             </div>
           ))}
